@@ -41,7 +41,7 @@
       <!-- <directory>./includes</directory> -->
       <!-- <directory>./lib</directory> -->
       <directory>./modules/action</directory>
-      <directory>../modules</directory>
+      <!-- <directory>../modules</directory> -->
       <!-- <directory>../themes</directory> -->
       <!-- <directory>../sites</directory> -->
       <!-- By definition test classes have no tests. -->
