@@ -138,6 +138,14 @@ Build:
     # Install specific CI tools.
     - robo install:ci
     # Add here any custom build step, composer run-script, grunt, webpack, yarn...
+    - ls -lAh
+    - ls -lAh ./web
+    - ls -lAh ${CI_PROJECT_DIR}
+    - ls -lAh ${CI_PROJECT_DIR}/web
+    - ls -lAh ./web/core
+    - ls -lAh ${CI_PROJECT_DIR}/web/core
+    - ls -lAh ${DOC_ROOT}
+    - ls -lAh ${WEB_ROOT}
   variables:
     <<: *test_variables
   # [CI_TYPE] When using included Drupal for a module or a theme, the
@@ -297,7 +305,7 @@ Behat tests:
       - $SKIP_TEST_BEHAT == "1"
   script:
     - cp ${CI_PROJECT_DIR}/.gitlab-ci/RoboFile.php ${WEB_ROOT} || true
-    - robo prepare:folders
+    # - robo prepare:folders
     - robo install:drupal
     # Starting Chrome, we are not using Chromedriver.
     - /scripts/start-chrome.sh&
@@ -339,7 +347,7 @@ Pa11y:
       - $SKIP_TEST_PA11Y == "1"
   script:
     - cp ${CI_PROJECT_DIR}/.gitlab-ci/RoboFile.php ${WEB_ROOT} || true
-    - robo prepare:folders
+    # - robo prepare:folders
     - robo install:drupal
     # Install Pa11y-ci for tests with yarn.
     - robo install:pa11y

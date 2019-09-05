@@ -1082,7 +1082,7 @@ class RoboFile extends \Robo\Tasks {
     }
 
     if ($this->verbose) {
-      $task->arg('--verbose');
+      // $task->arg('--verbose');
     }
     else {
       $task->arg('--silent');
