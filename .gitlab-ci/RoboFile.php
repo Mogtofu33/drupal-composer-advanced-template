@@ -657,7 +657,7 @@ class RoboFile extends \Robo\Tasks {
     }
 
     // Add bin globally.
-    if (!file_exists('/usr/local/bin/phpunit') && file_exists($this->docRoot . '/vendor/bin/phpunit')) {
+    if (!file_exists('/usr/local/bin/phpunit') && is_writable('/usr/local/bin/') && file_exists($this->docRoot . '/vendor/bin/phpunit')) {
       $this->symlink($this->docRoot . '/vendor/bin/phpunit', '/usr/local/bin/phpunit');
     }
   }
@@ -721,7 +721,7 @@ class RoboFile extends \Robo\Tasks {
     }
 
     // Add bin to use taskBehat().
-    if (!file_exists('/usr/local/bin/behat')) {
+    if (!file_exists('/usr/local/bin/behat') && is_writable('/usr/local/bin/') && file_exists($this->docRoot . '/vendor/bin/behat')) {
       $this->symlink($this->docRoot . '/vendor/bin/behat', '/usr/local/bin/behat');
     }
   }
@@ -864,7 +864,7 @@ class RoboFile extends \Robo\Tasks {
     ];
     $this->installWithComposer($install, 'user');
 
-    if (!file_exists('/usr/local/bin/drush')) {
+    if (!file_exists('/usr/local/bin/drush') && is_writable('/usr/local/bin/') && file_exists($this->composerHome . '/vendor/bin/drush')) {
       $this->symlink($this->composerHome . '/vendor/bin/drush', '/usr/local/bin/drush');
     }
   }
