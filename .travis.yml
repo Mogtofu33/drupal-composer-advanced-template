@@ -12,6 +12,13 @@ env:
     - SIMPLETEST_BASE_URL="http://127.0.0.1:8080"
     - COMPOSER_MEMORY_LIMIT=-1
     - PHPUNIT_TESTS=custom
+    - CI_TYPE=project
+    - CI_DRUPAL_VERSION=8.7
+    - TOOLS=phpcs:0,phpmd
+    - BEST_PRACTICES=phpcs:0
+    - CI_PROJECT_DIR=$TRAVIS_BUILD_DIR
+    - DOC_ROOT=$TRAVIS_BUILD_DIR
+    - WEB_ROOT=$TRAVIS_BUILD_DIR/web
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
