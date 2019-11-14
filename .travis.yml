@@ -20,6 +20,7 @@ env:
     - CI_PROJECT_DIR=$TRAVIS_BUILD_DIR
     - DOC_ROOT=$TRAVIS_BUILD_DIR
     - WEB_ROOT=$TRAVIS_BUILD_DIR/web
+    - REPORT_DIR=reports
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -28,21 +29,23 @@ before_install:
   - composer --verbose self-update --stable
   - composer --version
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/RoboFile.php $TRAVIS_BUILD_DIR
-  - composer global require consolidation/robo
+  - composer global require consolidation/robo edgedesign/phpqa --update-no-dev
 
 install:
   - /home/travis/.config/composer/vendor/bin/robo project:build
   - /home/travis/.config/composer/vendor/bin/robo yarn:install
   - /home/travis/.config/composer/vendor/bin/robo install:phpunit
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/phpunit.xml $WEB_ROOT/core
-  - /home/travis/.config/composer/vendor/bin/robo prepare:folders
+  # - cd $TRAVIS_BUILD_DIR/web
+  # - $TRAVIS_BUILD_DIR/vendor/bin/drush -y si --existing-config --db-url=$SIMPLETEST_DB
+  # - $TRAVIS_BUILD_DIR/vendor/bin/drush runserver $SIMPLETEST_BASE_URL &
+  # - until curl -s $SIMPLETEST_BASE_URL; do sleep 2s; done > /dev/null
+  # - $TRAVIS_BUILD_DIR/vendor/bin/drush core:status
 
 script:
-  - cd $TRAVIS_BUILD_DIR/web
-  - $TRAVIS_BUILD_DIR/vendor/bin/drush -y si --existing-config --account-name=admin --account-pass=password --db-url=$SIMPLETEST_DB
-  - $TRAVIS_BUILD_DIR/vendor/bin/drush runserver $SIMPLETEST_BASE_URL &
-  - until curl -s $SIMPLETEST_BASE_URL; do sleep 2s; done > /dev/null
-  - $TRAVIS_BUILD_DIR/vendor/bin/drush core:status
   - cd $TRAVIS_BUILD_DIR
-  - /home/travis/.config/composer/vendor/bin/robo test:suite "${PHPUNIT_TESTS}unit,${PHPUNIT_TESTS}kernel"
-
+  # - /home/travis/.config/composer/vendor/bin/robo test:suite "${PHPUNIT_TESTS}unit,${PHPUNIT_TESTS}kernel"
+  - phpqa --tools security-checker:0
+      --buildDir ${REPORT_DIR}
+      --analyzedDirs ${DOC_ROOT}
+      --verbose
