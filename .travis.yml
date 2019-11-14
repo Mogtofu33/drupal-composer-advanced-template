@@ -21,6 +21,7 @@ env:
     - DOC_ROOT=$TRAVIS_BUILD_DIR
     - WEB_ROOT=$TRAVIS_BUILD_DIR/web
     - REPORT_DIR=reports
+    - COMPOSER_BIN_DIR=/home/travis/.config/composer/vendor/bin
 
 before_install:
   - echo 'sendmail_path = /bin/true' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -32,9 +33,9 @@ before_install:
   - composer global require consolidation/robo:^1 edgedesign/phpqa:^1.23 --update-no-dev
 
 install:
-  - /home/travis/.config/composer/vendor/bin/robo project:build
-  - /home/travis/.config/composer/vendor/bin/robo yarn:install
-  - /home/travis/.config/composer/vendor/bin/robo install:phpunit
+  - $COMPOSER_BIN_DIR/robo project:build
+  - $COMPOSER_BIN_DIR/robo yarn:install
+  - $COMPOSER_BIN_DIR/robo install:phpunit
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/phpunit.xml $WEB_ROOT/core
   # - cd $TRAVIS_BUILD_DIR/web
   # - $TRAVIS_BUILD_DIR/vendor/bin/drush -y si --existing-config --db-url=$SIMPLETEST_DB
@@ -44,8 +45,8 @@ install:
 
 script:
   - cd $TRAVIS_BUILD_DIR
-  # - /home/travis/.config/composer/vendor/bin/robo test:suite "${PHPUNIT_TESTS}unit,${PHPUNIT_TESTS}kernel"
-  - phpqa --tools security-checker:0
+  # - $COMPOSER_BIN_DIR/robo test:suite "${PHPUNIT_TESTS}unit,${PHPUNIT_TESTS}kernel"
+  - $COMPOSER_BIN_DIR/phpqa --tools security-checker:0
       --buildDir ${REPORT_DIR}
       --analyzedDirs ${DOC_ROOT}
       --verbose
