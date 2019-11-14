@@ -29,7 +29,7 @@ before_install:
   - composer --verbose self-update --stable
   - composer --version
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/RoboFile.php $TRAVIS_BUILD_DIR
-  - composer global require consolidation/robo edgedesign/phpqa --update-no-dev
+  - composer global require consolidation/robo:^1 edgedesign/phpqa:^1.23 --update-no-dev
 
 install:
   - /home/travis/.config/composer/vendor/bin/robo project:build
