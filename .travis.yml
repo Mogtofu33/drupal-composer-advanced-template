@@ -28,12 +28,14 @@ before_install:
   - composer --verbose self-update --stable
   - composer --version
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/RoboFile.php $TRAVIS_BUILD_DIR
+  - cp $TRAVIS_BUILD_DIR/.gitlab-ci/phpunit.xml ${WEB_ROOT}/core
   - composer global require consolidation/robo
 
 install:
   - /home/travis/.config/composer/vendor/bin/robo project:build
   - /home/travis/.config/composer/vendor/bin/robo yarn:install
   - /home/travis/.config/composer/vendor/bin/robo install:phpunit
+  - /home/travis/.config/composer/vendor/bin/robo prepare:folders
 
 script:
   - cd $TRAVIS_BUILD_DIR/web
@@ -43,4 +45,4 @@ script:
   - $TRAVIS_BUILD_DIR/vendor/bin/drush core:status
   - cd $TRAVIS_BUILD_DIR
   - /home/travis/.config/composer/vendor/bin/robo test:suite "${PHPUNIT_TESTS}unit,${PHPUNIT_TESTS}kernel"
-  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit -c $WEB_ROOT/core --testsuite unit --exclude-group Composer,DependencyInjection,PageCache,Setup
+
