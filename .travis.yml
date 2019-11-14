@@ -29,8 +29,10 @@ before_install:
   - phpenv config-rm xdebug.ini
   - composer --verbose self-update --stable
   - composer --version
+  - curl -f -N https://gitlab.com/mog33/drupal8ci/raw/master/8.x/drupal/composer.json -o /home/travis/.config/composer/composer.json
+  - composer global install --no-ansi -n --profile --no-suggest
   - cp $TRAVIS_BUILD_DIR/.gitlab-ci/RoboFile.php $TRAVIS_BUILD_DIR
-  - composer global require consolidation/robo:^1 edgedesign/phpqa:^1.23 --update-no-dev
+  # - composer global require consolidation/robo:^1 edgedesign/phpqa:^1.23 --update-no-dev
 
 install:
   - $COMPOSER_BIN_DIR/robo project:build
